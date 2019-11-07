@@ -1,8 +1,11 @@
 import express from "express";
+import BodyParser from 'body-parser';
+import FormData from 'express-form-data';
 import next from "next";
 import session from "express-session";
 import ConnectMongo from "connect-mongo";
 import { setupMongoClient } from "./database";
+import api from './routes/api';
 
 export default module.exports = async ({
   NODE_ENV,
@@ -36,6 +39,14 @@ export default module.exports = async ({
     store: mongoStore
   });
   app.use(sessionMiddleware);
+
+  //Setup express api routes
+  app.use(BodyParser.json());
+  app.use(FormData.parse({
+    autoClean: true
+  }));
+  app.use(FormData.format());
+  app.use('/api', api);
 
   //Setup next.js
   const nextApp = next({ dev: NODE_ENV === "development" });

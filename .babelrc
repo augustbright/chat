@@ -1,11 +1,15 @@
 {
-    "presets": [[
-        "@babel/preset-env",
-        {
-            "targets": {
-                "node": "current"
-            }
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
         }
-    ], "@babel/preset-react"],
-    "ignore": ["node_modules"]
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
+  "ignore": ["node_modules"]
 }
