@@ -7,12 +7,13 @@ import {
   isomorphicCredintials,
   isomorphicRedirect
 } from "../common";
+import BasicPage from "../components/layout/BasicPage";
 
 const Index = ({ sessionInfo }) => {
   return (
-    <div>
+    <BasicPage>
       <h1>Hola, {sessionInfo.nickname}!</h1>
-    </div>
+    </BasicPage>
   );
 };
 
@@ -21,7 +22,7 @@ Index.propTypes = {
 };
 
 Index.getInitialProps = async (context: NextPageContext) => {
-  console.log('isomorphic endpoint', isomorphicEndpoint("/session"));
+  console.log("isomorphic endpoint", isomorphicEndpoint("/session"));
   const sessionResponse = await fetch(
     isomorphicEndpoint("/session"),
     isomorphicCredintials(context, {
@@ -30,7 +31,7 @@ Index.getInitialProps = async (context: NextPageContext) => {
   );
   const sessionInfo = await sessionResponse.json();
   if (!sessionInfo) {
-    isomorphicRedirect(context, '/welcome');
+    isomorphicRedirect(context, "/welcome");
     return {};
   }
   return { sessionInfo };

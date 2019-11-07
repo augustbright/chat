@@ -1,5 +1,7 @@
-module.exports = {
+const withSASS = require('@zeit/next-sass');
+
+module.exports = withSASS({
     publicRuntimeConfig: {
         appAddress: process.env.APPLICATION_ADDRESS
     }
-};
+});

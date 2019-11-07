@@ -50,6 +50,10 @@ export const isomorphicRedirect = (context: NextPageContext, location: string): 
 
 //Prop types
 export const CommonPropTypes = {
+  Children: PropType.oneOfType([
+    PropType.node,
+    PropType.arrayOf(PropType.node)
+  ]),
   SessionInfo: PropType.shape({
     nickname: PropType.string
   })
