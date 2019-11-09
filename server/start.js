@@ -12,6 +12,7 @@ export default module.exports = async ({
   PORT,
   MONGO_URL,
   MONGO_DB,
+  COOKIE_NAME,
   COOKIE_SECRET
 }) => {
   //Create Express app
@@ -34,6 +35,7 @@ export default module.exports = async ({
     client: mongoClient
   });
   const sessionMiddleware = session({
+    name: COOKIE_NAME,
     secret: COOKIE_SECRET,
     rolling: true,
     store: mongoStore
