@@ -7,27 +7,27 @@ import Router from 'next/router';
 export const APPLICATION_API_PATH = "/api";
 
 //Helpers
-export const isServerContext = (context) =>
+export const isServerContext = (context: NextPageContext): boolean =>
   !!context.req;
 
-export const getPublicRuntimeConfig = () =>
+export const getPublicRuntimeConfig = (): Record<string, any> =>
   getConfig().publicRuntimeConfig;
 
-export const getApplicationAddress = () =>
+export const getApplicationAddress = (): string =>
   getPublicRuntimeConfig().appAddress;
 
-export const isomorphicURL = (path) =>
+export const isomorphicURL = (path: string): string =>
   `${getApplicationAddress()}${path}`;
 
-export const isomorphicEndpoint = (endpoint) =>
+export const isomorphicEndpoint = (endpoint: string): string =>
   isomorphicURL(`${APPLICATION_API_PATH}${endpoint}`);
 
 export const isomorphicCredintials = (
-  context,
-  config = {}
-) => {
+  context: NextPageContext,
+  config: RequestInit = {}
+): RequestInit => {
   const isServer = isServerContext(context);
-  const includeHeaders = isServer ? (context.req.headers || {}) : {};
+  const includeHeaders = isServer ? (context.req.headers || {}) : {} as object;
   return {
     ...config,
     credentials: isServer ? "include" : "same-origin",
@@ -37,7 +37,7 @@ export const isomorphicCredintials = (
   };
 };
 
-export const isomorphicRedirect = (context, location) => {
+export const isomorphicRedirect = (context: NextPageContext, location: string): void => {
   const isServer = isServerContext(context);
   if (isServer) {
     context.res.writeHead(302, {

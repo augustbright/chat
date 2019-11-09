@@ -3,7 +3,7 @@ import Container from "./Container";
 import { CommonPropTypes } from "../../common";
 import "./WithBootstrap.scss";
 
-const BasicPage = ({ children }) => (
+const BasicPage = ({ children, store }) => (
     <Container>{children}</Container>
 );
 

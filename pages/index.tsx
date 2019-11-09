@@ -1,5 +1,6 @@
 import React from "react";
 import fetch from "isomorphic-fetch";
+import { NextPageContext } from "next";
 import {
   CommonPropTypes,
   isomorphicEndpoint,
@@ -20,7 +21,7 @@ Index.propTypes = {
   sessionInfo: CommonPropTypes.SessionInfo
 };
 
-Index.getInitialProps = async ({context}) => {
+Index.getInitialProps = async (context: NextPageContext) => {
   console.log("isomorphic endpoint", isomorphicEndpoint("/session"));
   const sessionResponse = await fetch(
     isomorphicEndpoint("/session"),
