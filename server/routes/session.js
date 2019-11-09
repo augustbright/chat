@@ -9,7 +9,6 @@ session.post("/", async (req, res) => {
   const { nickname } = req.body || {};
   const info = (req.session.info = req.session.info || {});
   Object.assign(info, { nickname });
-  await req.session.save();
 
   res.status(200).end();
 });

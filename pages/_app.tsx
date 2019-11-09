@@ -2,6 +2,7 @@ import React from "react";
 import App from "next/app";
 import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
+import withReduxSaga from "next-redux-saga";
 import createStore from "../redux/store";
 import { setCookie } from "../redux/reducer";
 import { getSessionCookie } from "../common";
@@ -27,4 +28,4 @@ class MyApp extends App {
   }
 }
 
-export default withRedux(createStore)(MyApp);
+export default withRedux(createStore)(withReduxSaga(MyApp));

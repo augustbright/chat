@@ -1,17 +1,20 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { CommonPropTypes } from "../common";
-import BasicPage from "../components/layout/BasicPage";
+import {
+  CommonPropTypes,
+  isomorphicRedirect
+} from "../common";
+import Page from "../components/layout/Page";
 import { INextPageContextWithSaga } from "../redux/store";
-import { requestSessionInfo } from "../redux/reducer";
-import { selectNickname } from "../redux/selectors";
+import { selectNickname, selectIsLoggedIn } from "../redux/selectors";
+import { initSessionInfo } from "../common/init_store";
 
 const Index = () => {
   const nickname = useSelector(selectNickname);
   return (
-    <BasicPage>
+    <Page>
       <h1>Hola, {nickname}!</h1>
-    </BasicPage>
+    </Page>
   );
 };
 
@@ -20,25 +23,15 @@ Index.propTypes = {
 };
 
 Index.getInitialProps = async (context: INextPageContextWithSaga) => {
-  // Wait until we get session info
-  await context.store.execSagaTasks(context.isServer, dispatch => {
-    dispatch(requestSessionInfo());
-  });
+  await initSessionInfo(context);
 
-  //DELETE BELOW
+  // If user is not logged in, refirect to "/welcome"
+  const state = context.store.getState();
+  if (!selectIsLoggedIn(state)) {
+    isomorphicRedirect(context, "/welcome");
+  }
 
-  // const sessionResponse = await fetch(
-  //   isomorphicEndpoint("/session"),
-  //   isomorphicCredintials(context, {
-  //     method: "GET"
-  //   })
-  // );
-  // const sessionInfo = await sessionResponse.json();
-  // if (!sessionInfo) {
-  //   isomorphicRedirect(context, "/welcome");
-  //   return {};
-  // }
-  return { sessionInfo: { nickname: "Hola Mocked" } };
+  return {};
 };
 
 export default Index;

@@ -38,6 +38,7 @@ export default module.exports = async ({
     name: COOKIE_NAME,
     secret: COOKIE_SECRET,
     rolling: true,
+    resave: false,
     store: mongoStore
   });
   app.use(sessionMiddleware);

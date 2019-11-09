@@ -6,13 +6,7 @@ import reducer from "./reducer";
 import rootSaga from "./sagas";
 
 export interface IStoreWithSaga extends Store {
-  saga?: Task;
-  runSaga: () => void;
-  stopSaga: () => Promise<void>;
-  execSagaTasks: (
-    isServer: boolean,
-    tasks: (dispatch: Dispatch) => void
-  ) => Promise<void>;
+  sagaTask?: Task;
 }
 
 export interface INextPageContextWithSaga extends NextPageContext {
@@ -25,7 +19,7 @@ const composeEnhancers =
     window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"]) ||
   compose;
 
-export default (initialState, options): IStoreWithSaga => {
+export default (initialState): IStoreWithSaga => {
   const sagaMiddleware = createSagaMiddleware({});
   const store = createStore(
     reducer,
@@ -33,32 +27,14 @@ export default (initialState, options): IStoreWithSaga => {
     composeEnhancers(applyMiddleware(sagaMiddleware))
   ) as IStoreWithSaga;
 
-  store.runSaga = () => {
-    //avoid running twice
-    if (store.saga) return;
-    store.saga = sagaMiddleware.run(rootSaga);
-  };
-
-  store.stopSaga = async () => {
-    //avoid running twice
-    if (!store.saga) return;
-    store.dispatch(END);
-    await store.saga.toPromise();
-    store.saga = null;
-  };
-
-  store.execSagaTasks = async (isServer, tasks) => {
-    store.runSaga();
-    tasks(store.dispatch);
-    await store.stopSaga();
-
-    //re-run on client side
-    if (!isServer) {
-      store.runSaga();
-    }
-  };
-
-  store.runSaga();
+  /**
+   * next-redux-saga depends on `sagaTask` being attached to the store.
+   * It is used to await the rootSaga task before sending results to the client.
+   * However it should run only once - which must be regarded when using `next-redux-wrapper:^2.1.0`
+   */
+  if (!store.sagaTask) {
+    store.sagaTask = sagaMiddleware.run(rootSaga)
+  }  
 
   return store;
 };
