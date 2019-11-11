@@ -2,6 +2,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {selectMessageList} from '../redux/selectors';
 import MessageItem from './MessageItem';
+import MessageInput from './MessageInput';
 
 
 export default () => {
@@ -11,6 +12,7 @@ export default () => {
             {messageList.map(message => (
                 <MessageItem key={message._id} message={message}/>
             ))}
+            <MessageInput/>
         </>        
     );
 };

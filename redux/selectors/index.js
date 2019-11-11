@@ -16,3 +16,4 @@ export const selectActiveRoom = state => selectRoomsState(state).activeRoom;
 export const selectMessageState = state => state.message;
 export const selectMessageList = state => selectMessageState(state).messages;
 export const selectIsMessagesLoading = state => selectMessageState(state).loading;
+export const selectIsMessageSending = state => selectMessageState(state).messageSending;

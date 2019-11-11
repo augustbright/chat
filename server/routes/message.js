@@ -60,6 +60,7 @@ message.put("/:roomId", (req, res) => {
         nickname: req.session.info.nickname
       }
   });
+  res.status(200).end();
 });
 
 export default message;
