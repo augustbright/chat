@@ -3,6 +3,7 @@ import Container from "./Container";
 import { CommonPropTypes } from "../../common";
 import Header from "./Header";
 import "./WithBootstrap.scss";
+import "./BasicPage.scss";
 
 const BasicPage = ({ children }) => (
   <>
