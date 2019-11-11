@@ -1,19 +1,25 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import {
   CommonPropTypes,
   isomorphicRedirect
 } from "../common";
 import Page from "../components/layout/Page";
+import RoomsList from '../components/RoomsList';
 import { INextPageContextWithSaga } from "../redux/store";
-import { selectNickname, selectIsLoggedIn } from "../redux/selectors";
-import { initSessionInfo } from "../common/init_store";
+import { selectIsLoggedIn } from "../redux/selectors";
+import { initSessionInfo, initRooms } from "../common/init_store";
 
 const Index = () => {
-  const nickname = useSelector(selectNickname);
   return (
     <Page>
-      <h1>Hola, {nickname}!</h1>
+      <div className="row">
+        <div className="col col-2 mt-3">
+          <RoomsList/>
+        </div>
+        <div className="col">
+          content
+        </div>
+      </div>
     </Page>
   );
 };
@@ -23,7 +29,10 @@ Index.propTypes = {
 };
 
 Index.getInitialProps = async (context: INextPageContextWithSaga) => {
-  await initSessionInfo(context);
+  await Promise.all([
+    initSessionInfo(context),
+    initRooms(context)
+  ]);
 
   // If user is not logged in, refirect to "/welcome"
   const state = context.store.getState();

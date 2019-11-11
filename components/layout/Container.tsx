@@ -3,7 +3,7 @@ import { CommonPropTypes } from "../../common";
 
 const Container = ({children}) => {
     return (
-        <div className="container">
+        <div className="container-fluid">
             {children}
         </div>
     );

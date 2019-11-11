@@ -1,0 +1,17 @@
+import { MongoClient, Db } from "mongodb";
+
+let client: MongoClient;
+let db: Db;
+
+export const setupMongoClient = async ({
+  MONGO_URL,
+  MONGO_DB
+}): Promise<[MongoClient, Db]> => {
+  client = new MongoClient(MONGO_URL);
+  await client.connect();
+  console.log(`Connected to MongoDB`);
+  db = client.db(MONGO_DB);
+  return [client, db];
+};
+
+export const getDB = (): Db => db;
