@@ -2,7 +2,7 @@ import React from "react";
 import { selectRoomsList, selectActiveRoom } from "../redux/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import RoomItem from "./RoomItem";
-import { setActiveRoom } from "../redux/reducer/room";
+import { requestSetActiveRoom } from "../redux/reducer/room";
 
 export default () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export default () => {
           key={room._id}
           room={room}
           active={room._id === activeRoom}
-          onClick={() => dispatch(setActiveRoom(room._id))}
+          onClick={() => dispatch(requestSetActiveRoom(room._id))}
         />
       ))}
     </ul>

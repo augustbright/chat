@@ -10,4 +10,9 @@ export const selectIsSessionLoading = state => selectSession(state).loading === 
 export const selectRoomsState = state => state.room;
 export const selectRoomsList = state => selectRoomsState(state).rooms;
 export const selectIsRoomsLoading = state => selectRoomsState(state).loading;
+export const selectFirstRoom = state => selectRoomsList(state)[0];
 export const selectActiveRoom = state => selectRoomsState(state).activeRoom;
+
+export const selectMessageState = state => state.message;
+export const selectMessageList = state => selectMessageState(state).messages;
+export const selectIsMessagesLoading = state => selectMessageState(state).loading;

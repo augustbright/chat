@@ -11,11 +11,13 @@ export const {
   requestFetchRooms,
   setRooms,
   failFetchRooms,
+  requestSetActiveRoom,
   setActiveRoom
 } = createActions({
   REQUEST_FETCH_ROOMS: () => ({}),
   SET_ROOMS: rooms => ({ rooms }),
   FAIL_FETCH_ROOMS: error => ({ error }),
+  REQUEST_SET_ACTIVE_ROOM: activeRoom => ({ activeRoom }),
   SET_ACTIVE_ROOM: activeRoom => ({ activeRoom })
 });
 
@@ -34,6 +36,7 @@ export default handleActions(
       rooms: [],
       error
     }),
+    [requestSetActiveRoom.toString()]: state => state,
     [setActiveRoom.toString()]: (state, {payload: {activeRoom}}) => ({
         ...state,
         activeRoom
