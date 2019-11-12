@@ -3,33 +3,23 @@ import { getDB } from "../database";
 import { ObjectID } from "mongodb";
 const room = express.Router();
 
-const MOCK_ROOMS = [
-  {_id: 1, name: 'General'},
-  {_id: 2, name: 'animals'},
-  {_id: 3, name: 'art'},
-  {_id: 4, name: 'sports'},
-  {_id: 5, name: 'funny stuff'}
-];
-
 room.get("/", async (req, res) => {
-  return res.json(MOCK_ROOMS);
   const db = getDB();
-  const room = db.collection("room");
-  const rooms = await room.find({});
+  const rooms = await db.collection("rooms").find({});
   res.json(await rooms.toArray());
 });
 
 room.put("/", async (req, res) => {
   const db = getDB();
-  const room = db.collection("room");
-  const { name } = req.body;
-  await room.insertOne({ name });
+  const room = db.collection("rooms");
+  const { name, password } = req.body;
+  await room.insertOne({name, password});
   res.status(200).end();
 });
 
 room.post("/:id", async (req, res) => {
   const db = getDB();
-  const room = db.collection();
+  const room = db.collection('rooms');
   const { name } = req.body;
   const { id } = req.params;
   await room.findOneAndUpdate(
