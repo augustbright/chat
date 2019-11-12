@@ -2,10 +2,13 @@ import { INextPageContextWithSaga } from "../redux/store";
 import getConfig from "next/config";
 import Router from "next/router";
 import { AnyAction, ActionCreator } from "redux";
-import {selectSessionAuthenticated} from "../redux/selectors";
+import {
+  selectSessionAuthenticated,
+  selectSessionUnauthenticated
+} from "../redux/selectors";
 
 interface IIsomorphicActionCreator extends ActionCreator<AnyAction> {
-  (arg: any): AnyAction
+  (arg: any): AnyAction;
 }
 
 //Const
@@ -54,39 +57,66 @@ export const isomorphicRedirect = (
 };
 
 //requests
-export function request(context: INextPageContextWithSaga, url: string, requestInit: RequestInit = {}) {
+export function request(
+  context: INextPageContextWithSaga,
+  url: string,
+  requestInit: RequestInit = {}
+) {
   const cookie = String(getSessionCookie(context));
   const requestInitFinal: RequestInit = {
     method: "GET",
     ...requestInit,
     credentials: "include",
     headers: {
-      ...requestInit.headers || {},
+      ...(requestInit.headers || {}),
       cookie
     }
   };
   return fetch(url, requestInitFinal);
 }
 
-export function requestEndpoint(context: INextPageContextWithSaga, endpoint: string, requestInit: RequestInit = {}) {
+export function requestEndpoint(
+  context: INextPageContextWithSaga,
+  endpoint: string,
+  requestInit: RequestInit = {}
+) {
   return request(context, isomorphicEndpoint(endpoint), requestInit);
 }
 
 export async function requestForStore(
-  context: INextPageContextWithSaga, 
+  context: INextPageContextWithSaga,
   endpoint: string,
-  actionCreator: IIsomorphicActionCreator) {
-    const response = await requestEndpoint(context, endpoint);
-    const result = await response.json();
-    context.store.dispatch(actionCreator(result));
+  actionCreator: IIsomorphicActionCreator
+) {
+  const response = await requestEndpoint(context, endpoint);
+  const result = await response.json();
+  context.store.dispatch(actionCreator(result));
 }
 
-export function redirectUnauthenticated(context: INextPageContextWithSaga, location: string) {
+export function redirectBySelector(
+  context: INextPageContextWithSaga,
+  location: string,
+  selector: Function
+): boolean {
   const state = context.store.getState();
-  const authenticated = selectSessionAuthenticated(state);
-  if (!authenticated) {
+  const condition = selector(state);
+  if (condition) {
     isomorphicRedirect(context, location);
     return true;
   }
   return false;
+}
+
+export function redirectUnauthenticated(
+  context: INextPageContextWithSaga,
+  location: string
+): boolean {
+  return redirectBySelector(context, location, selectSessionUnauthenticated);
+}
+
+export function redirectAuthenticated(
+  context: INextPageContextWithSaga,
+  location: string
+): boolean {
+  return redirectBySelector(context, location, selectSessionAuthenticated);
 }

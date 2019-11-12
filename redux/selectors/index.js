@@ -4,6 +4,8 @@ export const selectSessionState = state => state.session;
 export const selectSessionCookie = state => selectSessionState(state).cookie;
 export const selectSessionAuthenticated = state =>
   selectSessionState(state).authenticated;
+export const selectSessionUnauthenticated = state =>
+  !selectSessionAuthenticated(state);
 export const selectIsSessionLoading = state =>
   selectSessionState(state).loading === true;
 
