@@ -1,11 +1,12 @@
 import express from "express";
-import BodyParser from 'body-parser';
-import FormData from 'express-form-data';
+import BodyParser from "body-parser";
+import FormData from "express-form-data";
 import next from "next";
 import session from "express-session";
 import ConnectMongo from "connect-mongo";
 import { setupMongoClient } from "./database";
-import api from './routes/api';
+import api from "./routes/api";
+import auth, { setupPassport } from "./routes/auth";
 
 export default module.exports = async ({
   NODE_ENV,
@@ -13,7 +14,10 @@ export default module.exports = async ({
   MONGO_URL,
   MONGO_DB,
   COOKIE_NAME,
-  COOKIE_SECRET
+  COOKIE_SECRET,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL
 }) => {
   //Create Express app
   const app = express();
@@ -43,13 +47,23 @@ export default module.exports = async ({
   });
   app.use(sessionMiddleware);
 
+  //Setup passport
+  setupPassport(app, {
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_CALLBACK_URL
+  });
+  
   //Setup express api routes
   app.use(BodyParser.json());
-  app.use(FormData.parse({
-    autoClean: true
-  }));
+  app.use(
+    FormData.parse({
+      autoClean: true
+    })
+  );
   app.use(FormData.format());
-  app.use('/api', api);
+  app.use("/api", api);
+  app.use("/auth", auth);
 
   //Setup next.js
   const nextApp = next({ dev: NODE_ENV === "development" });

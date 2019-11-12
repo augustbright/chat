@@ -7,7 +7,9 @@ export const setupMongoClient = async ({
   MONGO_URL,
   MONGO_DB
 }): Promise<[MongoClient, Db]> => {
-  client = new MongoClient(MONGO_URL);
+  client = new MongoClient(MONGO_URL, {
+    useUnifiedTopology: true
+  });
   await client.connect();
   console.log(`Connected to MongoDB`);
   db = client.db(MONGO_DB);
