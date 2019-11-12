@@ -10,7 +10,8 @@ import { setActiveRoom } from "../redux/reducer/room";
 import {
   initSessionInfo,
   initRooms,
-  initMessages
+  initMessages,
+  initInfoOnMe
 } from "../lib/store_initializers";
 
 const Index = () => {
@@ -36,11 +37,11 @@ Index.getInitialProps = async (context: INextPageContextWithSaga) => {
   await initSessionInfo(context);
 
   // If user is not logged in, refirect to "/welcome"
-  if (redirectUnauthenticated(context, '/welcome')) {
+  if (redirectUnauthenticated(context, "/welcome")) {
     return {};
   }
 
-  await initRooms(context);
+  await Promise.all([initInfoOnMe(context), initRooms(context)]);
   const state = context.store.getState();
 
   //set first room active by default
