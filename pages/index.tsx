@@ -29,10 +29,6 @@ const Index = () => {
   );
 };
 
-Index.propTypes = {
-  sessionInfo: CommonPropTypes.SessionInfo
-};
-
 Index.getInitialProps = async (context: INextPageContextWithSaga) => {
   await initSessionInfo(context);
 
