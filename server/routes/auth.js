@@ -15,10 +15,4 @@ auth.get("/logout", (req, res) => {
   res.redirect("/welcome");
 });
 
-auth.get('/', (req, res) => {
-  res.json({
-    authenticated: !!req.user
-  });
-});
-
 export default auth;

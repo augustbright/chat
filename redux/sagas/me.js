@@ -30,7 +30,7 @@ export function* requestInfoOnMeWatcher() {
     yield take(requestInfoOnMe);
     try {
         const meResponse = yield call(requestEndpoint, "/me");
-        const infoOnMe = yield call([meResponse, json]);
+        const infoOnMe = yield call([meResponse, 'json']);
         yield put(setInfoOnMe(infoOnMe));
     } catch (error) {
         yield put(failInfoOnMe(error));
@@ -40,4 +40,5 @@ export function* requestInfoOnMeWatcher() {
 
 export function* rootMeWatcher() {
   yield fork(requestInfoOnMeWatcher);
+  yield fork(requestSetInfoOnMeWatcher);
 }

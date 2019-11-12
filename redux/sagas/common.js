@@ -1,5 +1,5 @@
 import {select, call} from 'redux-saga/effects';
-import {isomorphicEndpoint, isomorphicURL} from '../../common';
+import {isomorphicEndpoint, isomorphicURL} from '../../lib/isomorphic';
 import fetch from 'isomorphic-fetch';
 import {selectSessionCookie} from '../selectors';
 

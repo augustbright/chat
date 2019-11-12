@@ -1,5 +1,5 @@
 import React from "react";
-import { CommonPropTypes } from "../../common";
+import CommonPropTypes from "../../lib/prop_types";
 
 const Container = ({children}) => {
     return (

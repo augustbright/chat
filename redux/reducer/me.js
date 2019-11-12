@@ -18,7 +18,9 @@ export default handleActions({
         ...state,
         loading: true
     }),
-    [requestSetInfoOnMe]: state => state,
+    [requestSetInfoOnMe]: state => ({
+        ...state
+    }),
     [setInfoOnMe.toString()]: (state, {payload: {info}}) => ({
         ...state,
         loading: false,

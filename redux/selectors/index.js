@@ -1,11 +1,21 @@
 import { createSelector } from "reselect";
 
-export const selectSession = state => state.session;
-export const selectSessionCookie = state => selectSession(state).cookie;
-export const selectSessionInfo = state => (selectSession(state).info || {});
-export const selectNickname = state => selectSessionInfo(state).nickname;
-export const selectIsLoggedIn = state => !!selectNickname(state);
-export const selectIsSessionLoading = state => selectSession(state).loading === true;
+export const selectSessionState = state => state.session;
+export const selectSessionCookie = state => selectSessionState(state).cookie;
+export const selectSessionAuthenticated = state =>
+  selectSessionState(state).authenticated;
+export const selectIsSessionLoading = state =>
+  selectSessionState(state).loading === true;
+
+export const selectMeState = state => state.me;
+export const selectInfoOnMe = state => selectMeState(state).info;
+export const selectHasInfoOnMe = state => !!selectInfoOnMe(state);
+export const selectMeLoading = state => selectMeState(state).loading;
+export const selectMyNickname = createSelector(
+  selectHasInfoOnMe,
+  selectInfoOnMe,
+  (hasInfo, info) => (hasInfo ? info.nickname : null)
+);
 
 export const selectRoomsState = state => state.room;
 export const selectRoomsList = state => selectRoomsState(state).rooms;
@@ -15,5 +25,7 @@ export const selectActiveRoom = state => selectRoomsState(state).activeRoom;
 
 export const selectMessageState = state => state.message;
 export const selectMessageList = state => selectMessageState(state).messages;
-export const selectIsMessagesLoading = state => selectMessageState(state).loading;
-export const selectIsMessageSending = state => selectMessageState(state).messageSending;
+export const selectIsMessagesLoading = state =>
+  selectMessageState(state).loading;
+export const selectIsMessageSending = state =>
+  selectMessageState(state).messageSending;

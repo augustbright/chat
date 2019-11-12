@@ -1,15 +1,17 @@
 import React from "react";
-import { CommonPropTypes, isomorphicRedirect } from "../common";
+import CommonPropTypes from "../lib/prop_types";
+import { redirectUnauthenticated } from "../lib/isomorphic";
 import Page from "../components/layout/Page";
 import RoomsList from "../components/RoomsList";
 import MessageBox from "../components/MessageBox";
 import { INextPageContextWithSaga } from "../redux/store";
-import {
-  selectIsLoggedIn,
-  selectFirstRoom
-} from "../redux/selectors";
+import { selectFirstRoom } from "../redux/selectors";
 import { setActiveRoom } from "../redux/reducer/room";
-import { initSessionInfo, initRooms, initMessages } from "../common/init_store";
+import {
+  initSessionInfo,
+  initRooms,
+  initMessages
+} from "../lib/store_initializers";
 
 const Index = () => {
   return (
@@ -31,10 +33,14 @@ Index.propTypes = {
 };
 
 Index.getInitialProps = async (context: INextPageContextWithSaga) => {
-  await Promise.all([
-    initSessionInfo(context),
-    initRooms(context)
-  ]);
+  await initSessionInfo(context);
+
+  // If user is not logged in, refirect to "/welcome"
+  if (redirectUnauthenticated(context, '/welcome')) {
+    return {};
+  }
+
+  await initRooms(context);
   const state = context.store.getState();
 
   //set first room active by default
@@ -44,11 +50,6 @@ Index.getInitialProps = async (context: INextPageContextWithSaga) => {
 
   //after setting active room, fetch messages for selected room
   await initMessages(context);
-
-  // If user is not logged in, refirect to "/welcome"
-  if (!selectIsLoggedIn(state)) {
-    isomorphicRedirect(context, "/welcome");
-  }
 
   return {};
 };

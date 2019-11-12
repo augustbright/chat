@@ -1,12 +1,12 @@
 import {fork, take, call, put} from 'redux-saga/effects';
 import {requestSessionInfo, setSessionInfo, failSessionInfo} from '../reducer/session';
-import {requestPath} from './common';
+import {requestEndpoint} from './common';
 
 export function* requestSessionInfoWatcher() {
   while(true) {
     yield take(requestSessionInfo);
     try {
-      const sessionResponse = yield call(requestPath, '/auth');
+      const sessionResponse = yield call(requestEndpoint, '/session');
       const session = yield sessionResponse.json();  
       yield put(setSessionInfo(session));
     } catch (error) {

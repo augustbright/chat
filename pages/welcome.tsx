@@ -1,21 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Page from "../components/layout/Page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import { faGooglePlusG } from "@fortawesome/free-brands-svg-icons";
 import Welcoming from "../components/welcome/Welcoming";
-import { useSelector, useDispatch } from "react-redux";
-import { selectIsSessionLoading, selectNickname } from "../redux/selectors";
-import { postSessionInfo } from "../redux/reducer/session";
 import { INextPageContextWithSaga } from "../redux/store";
-import { initSessionInfo } from "../common/init_store";
+import { initSessionInfo } from "../lib/store_initializers";
 
 const Welcome = () => {
-  const currentNickname = useSelector(selectNickname);
-  const isSessionLoading = useSelector(selectIsSessionLoading);
-  const [nickname, setNickname] = useState(currentNickname);
-  const dispatch = useDispatch();
-
   return (
     <Page>
       <div className="row justify-content-center mt-5">

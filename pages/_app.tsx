@@ -4,15 +4,12 @@ import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 import createStore from "../redux/store";
-import { setCookie } from "../redux/reducer";
-import { getSessionCookie } from "../common";
+import {initSessionCookie} from '../lib/store_initializers';
 
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    const sessionCookie = getSessionCookie(ctx);
-    ctx.store.dispatch(setCookie(sessionCookie));
-    const pageProps = Component["getInitialProps"]
+    initSessionCookie(ctx);    const pageProps = Component["getInitialProps"]
       ? await Component["getInitialProps"](ctx)
       : {};
     return { pageProps };

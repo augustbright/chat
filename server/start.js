@@ -7,7 +7,7 @@ import ConnectMongo from "connect-mongo";
 import { setupMongoClient } from "./database";
 import api from "./routes/api";
 import auth from "./routes/auth";
-import { setupPassport, forAuthenticatedOnly } from "./lib/auth";
+import { setupPassport } from "./lib/auth";
 
 export default module.exports = async ({
   NODE_ENV,
@@ -64,7 +64,7 @@ export default module.exports = async ({
   );
   app.use(FormData.format());
   app.use("/auth", auth);
-  app.use("/api", forAuthenticatedOnly, api);
+  app.use("/api", api);
 
   //Setup next.js
   const nextApp = next({ dev: NODE_ENV === "development" });
