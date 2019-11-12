@@ -8,7 +8,6 @@ const INITIAL_STATE = {
 };
 
 export const {
-  setCookie,
   requestSessionInfo,
   postSessionInfo,
   setSessionInfo,

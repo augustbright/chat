@@ -6,7 +6,8 @@ import session from "express-session";
 import ConnectMongo from "connect-mongo";
 import { setupMongoClient } from "./database";
 import api from "./routes/api";
-import auth, { setupPassport } from "./routes/auth";
+import auth from "./routes/auth";
+import { setupPassport, forAuthenticatedOnly } from "./lib/auth";
 
 export default module.exports = async ({
   NODE_ENV,
@@ -53,7 +54,7 @@ export default module.exports = async ({
     GOOGLE_CLIENT_SECRET,
     GOOGLE_CALLBACK_URL
   });
-  
+
   //Setup express api routes
   app.use(BodyParser.json());
   app.use(
@@ -62,8 +63,8 @@ export default module.exports = async ({
     })
   );
   app.use(FormData.format());
-  app.use("/api", api);
   app.use("/auth", auth);
+  app.use("/api", forAuthenticatedOnly, api);
 
   //Setup next.js
   const nextApp = next({ dev: NODE_ENV === "development" });
