@@ -15,7 +15,8 @@ import {
   failExploreResults
 } from "../reducer/explore";
 import { requestEndpoint } from "./common";
-import { selectExploreQueryString } from "../selectors";
+import { selectExploreQueryString, selectExploreQueryObject } from "../selectors";
+import Router from 'next/router';
 
 const QUERY_DEBOUNCE = 500;
 
@@ -25,9 +26,20 @@ export function* dispatchRequestExplore() {
 
 export function* performRequestExplore() {
   const queryString = yield select(selectExploreQueryString);
+  const queryObject = yield select(selectExploreQueryObject);
+  
   try {
     const exploreResults = yield call(requestEndpoint, `/room?${queryString}`);
     yield put(setExploreResults(exploreResults));
+    
+    //if we are on client side, push query params to router state, so user can go back
+    if (process.browser) {
+      Router.push({
+        pathname: Router.pathname,
+        query: queryObject
+      }, undefined, {shallow: true});
+    }
+
   } catch (error) {
     yield put(failExploreResults(error));
   }

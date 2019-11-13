@@ -69,3 +69,22 @@ export const selectExploreQueryString = createSelector(
     return resultArray.join('&');
   }
 );
+export const selectExploreQueryObject = createSelector(
+  selectExploreQuery,
+  selectExploreNear,
+  selectExplorePasswords,
+  (query, near, passwords) => {
+    const result = {};
+    if (query) {
+      const queryEncoded = encodeURIComponent(query);
+      result['q'] = queryEncoded;
+    }
+    if (near) {
+      result['n'] = 1;
+    }
+    if (passwords) {
+      result['p'] = 1;
+    }
+    return result;
+  }
+);

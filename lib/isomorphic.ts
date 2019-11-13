@@ -120,3 +120,13 @@ export function redirectAuthenticated(
 ): boolean {
   return redirectBySelector(context, location, selectSessionAuthenticated);
 }
+
+export const parseQueryFromURL = (url: string): Record<string, string> => {
+  return (url.split("?")[1] || "")
+    .split("&")
+    .map(param => param.split("="))
+    .reduce((memo, value) => {
+      memo[value[0]] = value[1];
+      return memo;
+    }, {});
+};

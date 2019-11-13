@@ -3,7 +3,12 @@ import { setSessionInfo, setSessionCookie } from "../redux/reducer/session";
 import { setRooms } from "../redux/reducer/room";
 import { setMessages } from "../redux/reducer/message";
 import { setInfoOnMe } from "../redux/reducer/me";
-import { selectActiveRoom, selectSessionAuthenticated } from "../redux/selectors";
+import { setExploreResults } from "../redux/reducer/explore";
+import {
+  selectActiveRoom,
+  selectSessionAuthenticated,
+  selectExploreQueryString,
+} from "../redux/selectors";
 import { requestForStore, getSessionCookie } from "./isomorphic";
 
 export function initSessionCookie(context: INextPageContextWithSaga) {
@@ -33,4 +38,9 @@ export async function initMessages(context: INextPageContextWithSaga) {
   if (!roomId) return;
 
   await requestForStore(context, `/message/${roomId}`, setMessages);
+}
+
+export async function initExplore(context: INextPageContextWithSaga) {
+  const query = selectExploreQueryString(context.store.getState());
+  await requestForStore(context, `/room?${query}`, setExploreResults);
 }
