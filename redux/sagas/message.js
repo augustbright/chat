@@ -12,18 +12,16 @@ import { requestEndpoint } from "./common";
 
 export function* watchRequestFetchMessage() {
   while (true) {
-    const {
-      payload: { roomId }
-    } = yield take(requestFetchMessages);
+    yield take(requestFetchMessages);
+    const roomId = yield select(selectActiveRoom);
     try {
-      const messageResponse = yield call(
+      const messages = yield call(
         requestEndpoint,
         `/message/${roomId}`,
         {
           method: "GET"
         }
       );
-      const messages = yield messageResponse.json();
       yield put(setMessages(messages));
     } catch (error) {
       yield put(failFetchMessages(error));
@@ -49,8 +47,7 @@ export function* watchRequestSendMessage() {
     }
 
     // update chat messages after sending
-    const activeRoomId = yield select(selectActiveRoom);
-    yield put(requestFetchMessages(activeRoomId));
+    yield put(requestFetchMessages());
     yield put(successSendMessage());
   }
 }

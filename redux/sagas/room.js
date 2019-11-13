@@ -29,7 +29,7 @@ export function* watchRequestSetActiveRoom() {
   while (true) {
     const {payload: {activeRoom}} = yield take(requestSetActiveRoom);
     yield put(setActiveRoom(activeRoom));
-    yield put(requestFetchMessages(activeRoom));
+    yield put(requestFetchMessages());
   }
 }
 

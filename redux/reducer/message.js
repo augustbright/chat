@@ -16,12 +16,12 @@ export const {
   successSendMessage,
   failSendMessage
 } = createActions({
-  REQUEST_FETCH_MESSAGES: roomId => ({ roomId }),
+  REQUEST_FETCH_MESSAGES: () => ({}),
   SET_MESSAGES: messages => ({ messages }),
   FAIL_FETCH_MESSAGES: error => ({ error }),
-  REQUEST_SEND_MESSAGE: ({roomId, message}) => ({ roomId, message }),
+  REQUEST_SEND_MESSAGE: ({ roomId, message }) => ({ roomId, message }),
   SUCCESS_SEND_MESSAGE: () => ({}),
-  FAIL_SEND_MESSAGE: error => ({error})
+  FAIL_SEND_MESSAGE: error => ({ error })
 });
 
 export default handleActions(
@@ -43,18 +43,18 @@ export default handleActions(
       error
     }),
     [requestSendMessage.toString()]: state => ({
-        ...state,
-        messageSending: true
+      ...state,
+      messageSending: true
     }),
     [successSendMessage.toString()]: state => ({
       ...state,
       messageSending: false,
       errorMessageSending: null
     }),
-    [failSendMessage.toString()]: (state, {payload: {error}}) => ({
-        ...state,
-        messageSending: false,
-        errorMessageSending: error
+    [failSendMessage.toString()]: (state, { payload: { error } }) => ({
+      ...state,
+      messageSending: false,
+      errorMessageSending: error
     })
   },
   DEFAULT_STATE
