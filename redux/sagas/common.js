@@ -19,5 +19,6 @@ export function* requestPath(path, requestInit={}) {
 }
 
 export function* requestEndpoint(endpoint, requestInit={}) {
-    return yield call(requestURL, isomorphicEndpoint(endpoint), requestInit);
+    const response = yield call(requestURL, isomorphicEndpoint(endpoint), requestInit);
+    return yield call([response, 'json']);
 }

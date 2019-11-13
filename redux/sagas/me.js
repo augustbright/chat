@@ -29,8 +29,7 @@ export function* requestInfoOnMeWatcher() {
   while (true) {
     yield take(requestInfoOnMe);
     try {
-        const meResponse = yield call(requestEndpoint, "/me");
-        const infoOnMe = yield call([meResponse, 'json']);
+        const infoOnMe = yield call(requestEndpoint, "/me");
         yield put(setInfoOnMe(infoOnMe));
     } catch (error) {
         yield put(failInfoOnMe(error));

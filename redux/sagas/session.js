@@ -6,8 +6,7 @@ export function* requestSessionInfoWatcher() {
   while(true) {
     yield take(requestSessionInfo);
     try {
-      const sessionResponse = yield call(requestEndpoint, '/session');
-      const session = yield sessionResponse.json();  
+      const session = yield call(requestEndpoint, '/session');
       yield put(setSessionInfo(session));
     } catch (error) {
       yield put(failSessionInfo(error));

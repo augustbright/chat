@@ -1,7 +1,7 @@
 import React, { useState, KeyboardEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { requestSendMessage } from "../redux/reducer/message";
-import { selectIsMessageSending, selectActiveRoom } from "../redux/selectors";
+import { requestSendMessage } from "../../redux/reducer/message";
+import { selectIsMessageSending, selectActiveRoom } from "../../redux/selectors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 

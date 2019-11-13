@@ -7,14 +7,14 @@ import { useRouter } from "next/router";
 
 const NavLink = ({ children, href }) => {
   const router = useRouter();
-  const itemClassNames = ["nav-item"]
+  const itemClassNames = ["nav-item"];
   const active = href === router.route;
   if (active) {
-    itemClassNames.push('active');
+    itemClassNames.push("active");
   }
 
   return (
-    <li className={itemClassNames.join(' ')}>
+    <li className={itemClassNames.join(" ")}>
       <Link href={href}>
         <a className="nav-link">{children}</a>
       </Link>
@@ -46,7 +46,8 @@ export default () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <NavLink href="/new">Create room</NavLink>
+          <NavLink href="/search">Explore</NavLink>
+          <NavLink href="/new">Create</NavLink>
         </ul>
       </div>
       <SessionPanel />

@@ -1,12 +1,10 @@
 import React from "react";
-import CommonPropTypes from "../lib/prop_types";
 import { redirectUnauthenticated } from "../lib/isomorphic";
 import Page from "../components/layout/Page";
+import Double from "../components/layout/Double";
 import RoomsList from "../components/RoomsList";
-import MessageBox from "../components/MessageBox";
+import ChatArea from "../components/chat/Area";
 import { INextPageContextWithSaga } from "../redux/store";
-import { selectFirstRoom } from "../redux/selectors";
-import { setActiveRoom } from "../redux/reducer/room";
 import {
   initSessionInfo,
   initRooms,
@@ -17,14 +15,7 @@ import {
 const Index = () => {
   return (
     <Page>
-      <div className="row mt-3">
-        <div className="col col-2">
-          <RoomsList />
-        </div>
-        <div className="col">
-          <MessageBox />
-        </div>
-      </div>
+      <Double leftContent={<RoomsList />} rightContent={<ChatArea />} />
     </Page>
   );
 };
@@ -39,11 +30,6 @@ Index.getInitialProps = async (context: INextPageContextWithSaga) => {
 
   await Promise.all([initInfoOnMe(context), initRooms(context)]);
   const state = context.store.getState();
-
-  //set first room active by default
-  const firstRoom = selectFirstRoom(state);
-  const firstRoomId = (firstRoom || {})._id;
-  context.store.dispatch(setActiveRoom(firstRoomId));
 
   //after setting active room, fetch messages for selected room
   await initMessages(context);

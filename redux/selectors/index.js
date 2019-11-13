@@ -31,3 +31,41 @@ export const selectIsMessagesLoading = state =>
   selectMessageState(state).loading;
 export const selectIsMessageSending = state =>
   selectMessageState(state).messageSending;
+
+export const selectExploreState = state => state.explore;
+export const selectExploreQuery = createSelector(
+  selectExploreState,
+  explore => {
+    const query = explore.query || '';
+    const queryStringified = String(query);
+    return queryStringified.trim();  
+  }
+);
+export const selectExploreNear = createSelector(
+  selectExploreState,
+  explore => !!explore.near
+);
+export const selectExplorePasswords = createSelector(
+  selectExploreState,
+  explore => !!explore.passwords
+);
+export const selectExploreResults = state => selectExploreState(state).results;
+export const selectExploreQueryString = createSelector(
+  selectExploreQuery,
+  selectExploreNear,
+  selectExplorePasswords,
+  (query, near, passwords) => {
+    const resultArray = [];
+    if (query) {
+      const queryEncoded = encodeURIComponent(query);
+      resultArray.push(`q=${queryEncoded}`);
+    }
+    if (near) {
+      resultArray.push(`n=1`);
+    }
+    if (passwords) {
+      resultArray.push(`p=1`);
+    }
+    return resultArray.join('&');
+  }
+);

@@ -15,10 +15,9 @@ export function* watchFetchRoomRequests() {
   while (true) {
     yield take(requestFetchRooms);
     try {
-      const roomResponse = yield call(requestEndpoint, "/room", {
+      const rooms = yield call(requestEndpoint, "/room", {
         method: "GET"
       });
-      const rooms = yield roomResponse.json();
       yield put(setRooms(rooms));
     } catch (error) {
       yield put(failFetchRooms(error));
