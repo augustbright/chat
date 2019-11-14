@@ -9,11 +9,12 @@ import {
   initInfoOnMe,
   initMyRooms
 } from "../lib/store_initializers";
+import MyRooms from "../components/MyRooms";
 
 const Index = () => {
   return (
     <Page>
-      <Double leftContent={"My rooms"} rightContent={<ChatArea />} />
+      <Double leftContent={<MyRooms />} rightContent={<ChatArea />} />
     </Page>
   );
 };
