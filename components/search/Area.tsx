@@ -9,7 +9,7 @@ export default () => {
 
   if (exploreResults.length) {
     return (
-        <div className="card-columns explore-columns">
+        <div className="card-columns explore-columns overflow-auto">
           {exploreResults.map(exploreResult => (
             <ResultItem key={exploreResult._id} exploreResult={exploreResult} />
           ))}

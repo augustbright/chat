@@ -33,7 +33,7 @@ export default () => {
   );
 
   return (
-    <div className="d-flex">
+    <div className="d-flex pb-3 pt-1">
       <textarea
         className="form-control"
         rows={2}

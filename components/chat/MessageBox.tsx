@@ -23,7 +23,9 @@ export default () => {
 
   return (
     <>
-      {messagesContent}
+      <div className="message-content">
+        {messagesContent}
+      </div>
       {inputContent}
     </>
   );

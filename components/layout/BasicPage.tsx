@@ -6,10 +6,10 @@ import "./WithBootstrap.scss";
 import "./BasicPage.scss";
 
 const BasicPage = ({ children }) => (
-  <>
+  <div className="d-flex h-100 basic-page">
     <Header />
     <Container>{children}</Container>
-  </>
+  </div>
 );
 
 BasicPage.propTypes = {
