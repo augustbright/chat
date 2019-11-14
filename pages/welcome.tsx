@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGooglePlusG } from "@fortawesome/free-brands-svg-icons";
 import Welcoming from "../components/welcome/Welcoming";
 import { INextPageContextWithSaga } from "../redux/store";
-import { initSessionInfo, initInfoOnMe } from "../lib/store_initializers";
+import { initSessionInfo } from "../lib/store_initializers";
 import { redirectAuthenticated } from "../lib/isomorphic";
 
 const Welcome = () => {

@@ -22,6 +22,34 @@ room.get("/", async (req, res) => {
   res.json(await rooms.toArray());
 });
 
+room.get("/:id", async (req, res) => {
+  const db = getDB();
+  const rooms = db.collection('rooms');
+  const {id} = req.params;
+  const room = await rooms.findOne({_id: ObjectID(id)});
+  room['members'] = room['members'] || [];
+  room['isMember'] = room['members'].includes(req.user);
+  res.json(room);
+});
+
+room.post("/join/:id", async (req, res) => {
+  const db = getDB();
+  const rooms = db.collection('rooms');
+  const users = db.collection('users');
+  const roomId = req.params.id;
+  const userId = req.user;
+
+  rooms.updateOne({_id: ObjectID(roomId)}, {
+    $addToSet: {members: userId}
+  });
+  users.updateOne({_id: ObjectID(userId)}, {
+    $addToSet: {memberOfRooms: roomId}
+  });
+  res.json({
+    isMember: true
+  }).end();
+});
+
 room.put("/", async (req, res) => {
   const db = getDB();
   const room = db.collection("rooms");

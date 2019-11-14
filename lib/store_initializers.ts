@@ -1,6 +1,5 @@
 import { INextPageContextWithSaga } from "../redux/store";
 import { setSessionInfo, setSessionCookie } from "../redux/reducer/session";
-import { setRooms } from "../redux/reducer/room";
 import { setMessages } from "../redux/reducer/message";
 import { setInfoOnMe } from "../redux/reducer/me";
 import { setExploreResults } from "../redux/reducer/explore";
@@ -25,10 +24,6 @@ export async function initInfoOnMe(context: INextPageContextWithSaga) {
 
 export async function initSessionInfo(context: INextPageContextWithSaga) {
   await requestForStore(context, "/session", setSessionInfo);
-}
-
-export async function initRooms(context: INextPageContextWithSaga) {
-  await requestForStore(context, "/room", setRooms);
 }
 
 export async function initMessages(context: INextPageContextWithSaga) {

@@ -20,10 +20,10 @@ export const selectMyNickname = createSelector(
 );
 
 export const selectRoomsState = state => state.room;
-export const selectRoomsList = state => selectRoomsState(state).rooms;
-export const selectIsRoomsLoading = state => selectRoomsState(state).loading;
-export const selectFirstRoom = state => selectRoomsList(state)[0];
+export const selectIsRoomLoading = state => selectRoomsState(state).loading;
 export const selectActiveRoom = state => selectRoomsState(state).activeRoom;
+export const selectIsMember = state => selectRoomsState(state).isMember;
+export const selectIsJoining = state => selectRoomsState(state).joining;
 
 export const selectMessageState = state => state.message;
 export const selectMessageList = state => selectMessageState(state).messages;
