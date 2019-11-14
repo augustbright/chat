@@ -88,3 +88,7 @@ export const selectExploreQueryObject = createSelector(
     return result;
   }
 );
+
+export const selectMembershipState = state => state.membership;
+export const selectMyRooms = state => selectMembershipState(state).rooms;
+export const selectMembershipLoading = state => selectMembershipState(state).rooms;

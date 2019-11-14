@@ -4,6 +4,7 @@ import { watchRoomRequests } from "./room";
 import { watchMessagesRequests } from "./message";
 import { rootMeWatcher } from "./me";
 import { rootExploreWatcher } from "./explore";
+import { rootMembershipWatcher } from "./membership";
 
 export default function* rootSaga() {
   yield fork(rootSessionWatcher);
@@ -11,4 +12,5 @@ export default function* rootSaga() {
   yield fork(watchMessagesRequests);
   yield fork(rootMeWatcher);
   yield fork(rootExploreWatcher);
+  yield fork(rootMembershipWatcher);
 }

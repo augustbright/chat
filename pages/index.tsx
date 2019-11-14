@@ -6,13 +6,14 @@ import ChatArea from "../components/chat/Area";
 import { INextPageContextWithSaga } from "../redux/store";
 import {
   initSessionInfo,
-  initInfoOnMe
+  initInfoOnMe,
+  initMyRooms
 } from "../lib/store_initializers";
 
 const Index = () => {
   return (
     <Page>
-      <Double leftContent={'My rooms'} rightContent={<ChatArea />} />
+      <Double leftContent={"My rooms"} rightContent={<ChatArea />} />
     </Page>
   );
 };
@@ -25,7 +26,7 @@ Index.getInitialProps = async (context: INextPageContextWithSaga) => {
     return {};
   }
 
-  await initInfoOnMe(context);
+  await Promise.all([initInfoOnMe(context), initMyRooms(context)]);
 
   return {};
 };
