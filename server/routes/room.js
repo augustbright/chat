@@ -4,6 +4,7 @@ import { ObjectID } from "mongodb";
 const room = express.Router();
 
 room.get("/", async (req, res) => {
+  console.log('route: /');
   const {q: query=''} = req.query;
   const filterQuery = {};
   const queryOptions = {};
@@ -20,6 +21,23 @@ room.get("/", async (req, res) => {
   const db = getDB();
   const rooms = await db.collection("rooms").find(filterQuery, queryOptions);
   res.json(await rooms.toArray());
+});
+
+room.get("/mine", async (req, res) => {
+  //get list of rooms, of which current user is member
+  const db = getDB();
+  const rooms = db.collection('rooms');
+  const users = db.collection('users');
+  const user = await users.findOne({_id: ObjectID(req.user)});
+  const usersRoomsIds = user.memberOfRooms || [];
+
+  if (!usersRoomsIds.length) {
+    return res.json([]);
+  }
+  
+  const usersRoomsObjectIds = usersRoomsIds.map(usersRoomId => ObjectID(usersRoomId));
+  const usersRooms = await rooms.find({_id: {$in: usersRoomsObjectIds}});
+  res.json(await usersRooms.toArray());
 });
 
 room.get("/:id", async (req, res) => {
