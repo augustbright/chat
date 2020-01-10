@@ -1,4 +1,8 @@
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, ObjectID } from "mongodb";
+
+export interface IMongoRecord {
+  _id?: ObjectID
+}
 
 let client: MongoClient;
 let db: Db;

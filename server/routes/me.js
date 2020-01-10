@@ -1,5 +1,5 @@
 import express from "express";
-import { getDB } from "../database";
+import { getDB } from "../lib/database";
 import {ObjectID} from 'mongodb';
 const me = express.Router();
 

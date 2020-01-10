@@ -1,9 +1,8 @@
 import express from "express";
 import { ObjectID } from "mongodb";
-import { getDB } from "../database";
-const message = express.Router();
+import { put as putMessage, getMessagesCollection } from "../lib/message";
 
-const getMessagesCollection = () => getDB().collection("messages");
+const message = express.Router();
 
 message.get("/:roomId", async (req, res) => {
   const { roomId } = req.params;
@@ -45,12 +44,7 @@ message.put("/:roomId", async (req, res) => {
     content: req.body.content,
     datetime: new Date()
   };
-  const messages = getMessagesCollection();
-  const insertResult = await messages.insertOne(record);
-  res.json({
-    _id: insertResult.insertedId,
-    ...record
-  });
+  res.json(await putMessage(record));
 });
 
 export default message;

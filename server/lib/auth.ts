@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { getDB } from "../database";
+import { getDB } from "./database";
 import { Response, Request } from "express";
 
 export const setupPassport = (

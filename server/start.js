@@ -4,7 +4,7 @@ import FormData from "express-form-data";
 import next from "next";
 import session from "express-session";
 import ConnectMongo from "connect-mongo";
-import { setupMongoClient } from "./database";
+import { setupMongoClient } from "./lib/database";
 import api from "./routes/api";
 import auth from "./routes/auth";
 import { setupPassport } from "./lib/auth";

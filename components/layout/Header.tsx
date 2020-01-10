@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SessionPanel from "../SessionPanel";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import {useSelector} from 'react-redux';
+import {selectSessionAuthenticated} from '../../redux/selectors';
 
 const NavLink = ({ children, href }) => {
   const router = useRouter();
@@ -23,6 +25,8 @@ const NavLink = ({ children, href }) => {
 };
 
 export default () => {
+  const authenticated = useSelector(selectSessionAuthenticated);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link href="/">
@@ -46,8 +50,8 @@ export default () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <NavLink href="/search">Explore</NavLink>
-          <NavLink href="/new">Create</NavLink>
+          {authenticated ? <NavLink href="/search">Explore</NavLink> : null}
+          {authenticated ? <NavLink href="/new">Create</NavLink> : null}
         </ul>
       </div>
       <SessionPanel />
