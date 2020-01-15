@@ -1,13 +1,31 @@
 import express from "express";
 import { ObjectID } from "mongodb";
-import { put as putMessage, getMessagesCollection, getAllUnreadData } from "../lib/message";
+import {
+  put as putMessage,
+  getMessagesCollection,
+  getAllUnreadData,
+  setLastRead,
+  getLastMessage
+} from "../lib/message";
 import { notifyClients } from "../lib/websocket";
 
 const message = express.Router();
 
-message.get('/unread', async (req, res) => {
+message.get("/unread", async (req, res) => {
   const unreadData = await getAllUnreadData(new ObjectID(req.user));
   res.json(unreadData);
+});
+
+message.post("/unread", async (req, res) => {
+  const { last } = req.data;
+  await setLastRead(new ObjectID(last), new ObjectID(req.user));
+  res.status(200).end();
+});
+
+message.get("/last/:roomId", async (req, res) => {
+  const { roomId } = req.params;
+  const lastMessage = await getLastMessage(new ObjectID(roomId));
+  res.json(lastMessage);
 });
 
 message.get("/:roomId", async (req, res) => {
@@ -54,7 +72,7 @@ message.put("/:roomId", async (req, res) => {
 
   // Notify clients about new message
   setImmediate(() => {
-    notifyClients(req.app, 'message', {
+    notifyClients(req.app, "message", {
       roomId: req.params.roomId
     });
   });

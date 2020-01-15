@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 import createStore from "../redux/store";
+import { handleNewMessage } from "../redux/reducer/message";
 import { initSessionCookie } from "../lib/store_initializers";
 import { parseQueryFromURL } from "../lib/isomorphic";
 import {
@@ -47,6 +48,15 @@ class MyApp extends App {
         dispatchQueryParams({ store, query });
         return true;
       });
+
+      // setup websocket listener
+      const ws = new WebSocket("ws://localhost:8080");
+      ws.onmessage = async event => {
+        const data = await JSON.parse(event.data || "{}");
+        if (data.event === 'message') {
+          store.dispatch(handleNewMessage(data.payload.roomId));
+        }
+      };
     }
   }
   render() {

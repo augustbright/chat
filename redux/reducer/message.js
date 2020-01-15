@@ -14,14 +14,16 @@ export const {
   failFetchMessages,
   requestSendMessage,
   successSendMessage,
-  failSendMessage
+  failSendMessage,
+  handleNewMessage
 } = createActions({
   REQUEST_FETCH_MESSAGES: () => ({}),
   SET_MESSAGES: messages => ({ messages }),
   FAIL_FETCH_MESSAGES: error => ({ error }),
   REQUEST_SEND_MESSAGE: ({ roomId, message }) => ({ roomId, message }),
   SUCCESS_SEND_MESSAGE: () => ({}),
-  FAIL_SEND_MESSAGE: error => ({ error })
+  FAIL_SEND_MESSAGE: error => ({ error }),
+  HANDLE_NEW_MESSAGE: (roomId) => ({roomId})
 });
 
 export default handleActions(

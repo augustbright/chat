@@ -1,7 +1,7 @@
 import express from "express";
 import { getDB } from "../lib/database";
 import { ObjectID } from "mongodb";
-import { put as putMessage, ServiceMessage } from "../lib/message";
+import { put as putMessage, ServiceMessage, getAllUnreadData } from "../lib/message";
 
 const room = express.Router();
 
@@ -40,8 +40,19 @@ room.get("/mine", async (req, res) => {
   const usersRoomsObjectIds = usersRoomsIds.map(usersRoomId =>
     ObjectID(usersRoomId)
   );
+  const unreadDataPromise = getAllUnreadData(ObjectID(req.user));
   const usersRooms = await rooms.find({ _id: { $in: usersRoomsObjectIds } });
-  res.json(await usersRooms.toArray());
+  const roomsArray = await usersRooms.toArray();
+  const unreadData = await unreadDataPromise;
+
+  roomsArray.forEach(room => {
+    const roomKey = String(room._id);
+    if (roomKey in unreadData) {
+      Object.assign(room, unreadData[roomKey]);
+    }
+  });
+
+  res.json(roomsArray);
 });
 
 room.get("/:id", async (req, res) => {
