@@ -1,9 +1,14 @@
 import express from "express";
 import { ObjectID } from "mongodb";
-import { put as putMessage, getMessagesCollection } from "../lib/message";
+import { put as putMessage, getMessagesCollection, getAllUnreadData } from "../lib/message";
 import { notifyClients } from "../lib/websocket";
 
 const message = express.Router();
+
+message.get('/unread', async (req, res) => {
+  const unreadData = await getAllUnreadData(new ObjectID(req.user));
+  res.json(unreadData);
+});
 
 message.get("/:roomId", async (req, res) => {
   const { roomId } = req.params;
