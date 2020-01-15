@@ -12,15 +12,16 @@ interface IMessageRecord extends IMongoRecord {
 }
 
 export enum ServiceMessage {
-    'JOINED'
-};
+  "JOINED"
+}
 
 export const getMessagesCollection = () => getDB().collection("messages");
 
 export async function put(record: IMessageRecord): Promise<IMessageRecord> {
-  record['datetime'] = record['datetime'] || new Date();
+  record["datetime"] = record["datetime"] || new Date();
   const messages = getMessagesCollection();
   const insertResult = await messages.insertOne(record);
+
   return {
     _id: insertResult.insertedId,
     ...record

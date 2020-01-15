@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 import BodyParser from "body-parser";
 import FormData from "express-form-data";
 import next from "next";
@@ -8,6 +8,7 @@ import { setupMongoClient } from "./lib/database";
 import api from "./routes/api";
 import auth from "./routes/auth";
 import { setupPassport } from "./lib/auth";
+import { setupSocketing, BROADCAST_FUNCTION_KEY } from "./lib/websocket";
 
 export default module.exports = async ({
   NODE_ENV,
@@ -22,7 +23,7 @@ export default module.exports = async ({
 }) => {
   //Create Express app
   const app = express();
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Listening on ${PORT}...`);
   });
 
@@ -73,6 +74,9 @@ export default module.exports = async ({
   app.get("*", (req, res) => {
     nextHandler(req, res);
   });
+
+  //Setup websocket
+  app.set(BROADCAST_FUNCTION_KEY, setupSocketing(server));
 
   return true;
 };

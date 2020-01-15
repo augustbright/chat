@@ -1,6 +1,7 @@
 import express from "express";
 import { ObjectID } from "mongodb";
 import { put as putMessage, getMessagesCollection } from "../lib/message";
+import { notifyClients } from "../lib/websocket";
 
 const message = express.Router();
 
@@ -45,6 +46,13 @@ message.put("/:roomId", async (req, res) => {
     datetime: new Date()
   };
   res.json(await putMessage(record));
+
+  // Notify clients about new message
+  setImmediate(() => {
+    notifyClients(req.app, 'message', {
+      roomId: req.params.roomId
+    });
+  });
 });
 
 export default message;
